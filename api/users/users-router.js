@@ -19,27 +19,31 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/:id', validateUserId, (req, res) => {
-  console.log(req.user)
+  res.json(req.user)
 });
 
-router.post('/', validateUser, (req, res) => {
+router.post('/', validateUser, (req, res, next) => {
+  User.insert({name: req.name})
+  .then(newUser => {
+    res.status(201).json(newUser)
+  })
+  .catch(next)
+});
+
+router.put('/:id', validateUserId, validateUser, (req, res, next) => {
+  console.log(req.user)
   console.log(req.name)
 });
 
-router.put('/:id', validateUserId, validateUser, (req, res) => {
-  console.log(req.user)
-  console.log(req.name)
-});
-
-router.delete('/:id', validateUserId, (req, res) => {
+router.delete('/:id', validateUserId, (req, res, next) => {
   console.log(req.user)
 });
 
-router.get('/:id/posts', validateUserId, (req, res) => {
+router.get('/:id/posts', validateUserId, (req, res, next) => {
   console.log(req.user)
 });
 
-router.post('/:id/posts', validateUserId, validatePost, (req, res) => {
+router.post('/:id/posts', validateUserId, validatePost, (req, res, next) => {
   console.log(req.user)
   console.log(req.text)
 });
